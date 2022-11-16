@@ -16,7 +16,8 @@
  }
 
  .paddle{
-    min-height: 10%;
+    min-height:40px;
+  max-height:80px;
  }
  .ball{
     min-height: 0.8rem;
