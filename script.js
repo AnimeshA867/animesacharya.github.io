@@ -178,11 +178,11 @@ start.onclick=()=>{
     })
     document.addEventListener("touchmove",
     function clicked(e) {
-        // var br = document.getElementById("touchme");
-        // x & y are relative to the clicked element
-    player.position = (e.touches[0].clientY/innerHeight)*100 ;
-    // console.log(e.touches[0].clientY/innerHeight) ;
-        
+      let y=(e.touches[0].clientY/innerHeight)*100
+        if(y>0 &&y<100){
+
+            player.position = (e.touches[0].clientY/innerHeight)*100 ;
+        }
     });
 
 
