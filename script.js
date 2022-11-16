@@ -20,7 +20,7 @@ let b = document.getElementById("ball");
 
 let levels= document.getElementById('levels');
 
-let speedPaddle=-0.0001;
+let speedPaddle=0;
 let ballSpeed=1;
 let counter = document.getElementById("counter");
  let pauseStatus= false;
@@ -30,11 +30,11 @@ let counter = document.getElementById("counter");
 start.onclick=()=>{
      counterFunc();
     
-        if(stat=true){
+  
 
             ball.reset();
             computer.reset();
-        }
+
     
     start.style.display="none";
     pause.style.display="flex";
@@ -72,9 +72,9 @@ start.onclick=()=>{
             document.documentElement.style.setProperty("--hue",hue+delta*0.01);
             
             if (isLose()){
+                handleLost();
                 pauseStatus=true;
                 paused.style.visibility="hidden";
-                handleLost();
             }
             
         }
@@ -128,10 +128,7 @@ start.onclick=()=>{
     }
 
     const handleLost=()=>{
-        const rect = ball.rect();
-       
-        
-    
+        const rect = ball.rect()
         counterFunc();
       
         if(rect.right>=window.innerWidth){
@@ -143,7 +140,9 @@ start.onclick=()=>{
             computerScore.innerText= parseInt(computerScore.innerText)+1;
             // console.log("COmputer");
         }
-       
+        ball.reset();
+            computer.reset();
+        
      
     }
     function counterFunc(){
@@ -152,8 +151,8 @@ start.onclick=()=>{
         counter.innerText="3";
         pause.style.display="none";
         
-        ball.x=50;
-        ball.y=50;
+        // ball.x=50;
+        // ball.y=50;
         // ball.pause();
         setTimeout(()=>{
             counter.innerText=2;
@@ -168,6 +167,7 @@ start.onclick=()=>{
             pauseStatus=false;
             paused.style.visibility="hidden";
             
+            
         },3000);
     }
     
@@ -178,11 +178,15 @@ start.onclick=()=>{
     })
     document.addEventListener("touchmove",
     function clicked(e) {
-      let y=(e.touches[0].clientY/innerHeight)*100
+        // var br = document.getElementById("touchme");
+        // x & y are relative to the clicked element
+        let y=(e.touches[0].clientY/innerHeight)*100
         if(y>0 &&y<100){
 
             player.position = (e.touches[0].clientY/innerHeight)*100 ;
         }
+    // console.log(e.touches[0].clientY/innerHeight) ;
+        
     });
 
 
@@ -214,7 +218,7 @@ function toggle(a1){
 
 levels.addEventListener('click',(e)=>{
     if(e.target.innerText=="Easy"){
-        speedPaddle=-0.0001;
+        speedPaddle=0.0001;
         ballSpeed=1;
     }else if(e.target.innerText=="Hard"){
         speedPaddle=0.05;
