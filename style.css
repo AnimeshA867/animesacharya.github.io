@@ -38,11 +38,11 @@ min-height: 80px;
     max-height:100px;
 }
 .paddle.left{
-left:1vw;
+left:1rem;
 
 }
 .paddle.right{
-right:1vw;
+right:1rem;
 }
 
 .ball{
