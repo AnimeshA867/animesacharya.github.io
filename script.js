@@ -12,8 +12,7 @@ let computerScore = document.getElementById("computerScore");
 
 let winner = document.getElementById("winner");
 
-let p="Player Won!";
-let c = "Computer Won!";
+
 let again = document.getElementById("again");
 let pause=document.getElementById("pause");
 let b = document.getElementById("ball");
@@ -25,9 +24,38 @@ let ballSpeed=1;
 let counter = document.getElementById("counter");
  let pauseStatus= false;
 
+let singlePlayer;
+let keyPress=false;
 
- let stat=true;
+let stat = document.getElementById('stylePlay');
+
+stat.addEventListener('click',(e)=>{
+    console.log(e.target.innerText);
+    if(e.target.innerText==="Single Player"){
+        singlePlayer=true;
+    }
+    else if(e.target.innerText==="Multiplayer"){
+        singlePlayer=false;
+    }
+    stat.style.display="none";
+})
+
+
+let p="Player Won!";
+let c = "Computer Won!";
+
+if(singlePlayer==false){
+    p="Player 1 Won!";
+    c="Player 2 Won!";
+}else if(singlePlayer==true){
+    p="Player Won!";
+c = "Computer Won!";
+}
+console.log(p);
+console.log(c);
+
 start.onclick=()=>{
+    stat.style.display="none";
      counterFunc();
     
   
@@ -57,15 +85,20 @@ start.onclick=()=>{
                 // pauseStatus=false;
                 pause.innerText="Resume";
                 levels.style.display="flex";
+                again.style.display="flex";
             }else{    
+                again.style.display="none";
                 levels.style.display="none";
                 paused.style.display="none";  
                 pause.innerText="Pause";   
                 
 
                     ball.update(delta,[player.rect(),computer.rect()]);
+                    if(singlePlayer==true){
+
+                        computer.update(delta,ball.y);
+                    }
                     
-                    computer.update(delta,ball.y);
                 }
                  
             const hue = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hue"));
@@ -87,13 +120,25 @@ start.onclick=()=>{
             ball.pause();
             if(parseInt(playerScore.innerText)===10){
                 winner.style.visibility="visible";
-                winner.innerText=p;
+                if(singlePlayer==false){
+                    p="Player 1 Won!";
+                    c="Player 2 Won!";
+                    winner.innerText=p;
+                } else{
+                    winner.innerText=p;
+                    
+                }
                 // playerScore.innerText='0';
                 // computerScore.innerText='0';
                 again.style.display="flex";
                 
             }else if(parseInt(computerScore.innerText)===10){
                 winner.style.visibility="visible";
+                if(singlePlayer==false){
+                    p="Player 1 Won!";
+                    c="Player 2 Won!";
+                    winner.innerText=c;
+                }
                 winner.innerText=c;
                 // playerScore.innerText='0';
                 // computerScore.innerText='0';
@@ -130,7 +175,7 @@ start.onclick=()=>{
     const handleLost=()=>{
         const rect = ball.rect()
         counterFunc();
-      
+        again.style.visibility="hidden";
         if(rect.right>=window.innerWidth){
             playerScore.innerText=parseInt(playerScore.innerText)+1;
             // console.log("Player.");
@@ -145,6 +190,19 @@ start.onclick=()=>{
         
      
     }
+    again.addEventListener("click",()=>{
+        computer.reset();
+        ball.reset();
+        again.style.visibility="hidden";
+        b.style.display="block";
+        score.style.display="flex";
+        computerScore.innerText='0';
+        playerScore.innerText='0';
+        again.style.display="none";
+        winner.style.visibility="hidden"
+        counterFunc();
+        
+    })
     function counterFunc(){
         // ballPause();
         counter.style.display="block";
@@ -166,6 +224,7 @@ start.onclick=()=>{
             // stat=true;
             pauseStatus=false;
             paused.style.visibility="hidden";
+            again.style.visibility="visible";
             
             
         },3000);
@@ -188,19 +247,39 @@ start.onclick=()=>{
     // console.log(e.touches[0].clientY/innerHeight) ;
         
     });
+   
+    
+        document.addEventListener("keydown",(e)=>{
+            if(singlePlayer==false){
+
+                if(computer.position<100&&computer.position>0){
+                    if(e.key==="ArrowDown"){
+                        
+                        computer.position+=15;
+                    }else if(e.key==="ArrowUp"){
+                        computer.position-=15;
+                    }
+                }if(computer.position<=0){
+                    computer.position=1;
+                }else if(computer.position>=100){
+                    computer.position=99;
+                }
+                
+            }
+           
+        })
+   
+    
+   
+    // document.addEventListener("keyup",()=>{
+    //     if(computer.position<window.innerHeight&&computer.position>0){
+    //         computer.position-=10;
+    //     }
+    // })
 
 
 
-    again.addEventListener("click",()=>{
-        computer.reset();
-        ball.reset();
-        b.style.display="block";
-        score.style.display="flex";
-        computerScore.innerText='0';
-        playerScore.innerText='0';
-        again.style.display="none";
-        winner.style.visibility="hidden"
-    })
+  
 pause.addEventListener("click",()=>{
     pauseStatus=toggle(pauseStatus);
 })
