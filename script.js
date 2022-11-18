@@ -24,7 +24,7 @@ let ballSpeed=1;
 let counter = document.getElementById("counter");
  let pauseStatus= false;
 
-let singlePlayer;
+let singlePlayer=true;
 let keyPress=false;
 
 let stat = document.getElementById('stylePlay');
